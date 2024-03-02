@@ -1,0 +1,30 @@
+<div class="main">
+    <div *ngIf="authMode" class="main-center rounded" id="signup">
+        <h1 style="font-size: 55px;" class="my-3">UniCon</h1>
+        <p *ngIf="this.error" class="text-center error-msg fw-bold text-danger">
+            {{this.errorMsg}}
+        </p>
+        <input type="number" #enrollment class="p-2 py-3 rounded border w-100" placeholder="Enrollment Number..."
+            id="enrollment">
+        <br>
+        <button type="button" class="p-2 py-2 rounded border w-100">Sign Up</button>
+        <br>
+        <p style="font-weight: 500;">Forgot Password?</p>
+        <span style="font-weight: 500; cursor: pointer;" (click)="changeAuthMode()">Already have an account?
+            <b>Login</b></span>
+    </div>
+    <div *ngIf="!authMode" class="main-center rounded" id="login">
+        <h1 style="font-size: 55px;" class="my-3">UniCon</h1>
+        <p *ngIf="this.error" class="error-msg text-center fw-bold text-danger">
+            {{this.errorMsg}}
+        </p>
+        <input type="email" #email class="p-2 my-2 py-3 rounded border w-100" placeholder="Email" id="email">
+        <input type="password" #password class="p-2 py-3 rounded border w-100" placeholder="Password" id="password">
+        <br>
+        <button type="button" (click)="this.onLogin()" class="p-2 py-2 rounded border w-100">Login</button>
+        <br>
+        <p style="font-weight: 500;">Forgot Password?</p>
+        <span style="font-weight: 500; cursor: pointer;" (click)="changeAuthMode()">Don't have an account? <b>Sign
+                Up</b></span>
+    </div>
+</div>
