@@ -4,10 +4,13 @@
         <p *ngIf="this.error" class="text-center error-msg fw-bold text-danger">
             {{this.errorMsg}}
         </p>
+        <p *ngIf="this.verificationSent" class="text-center error-msg fw-bold text-primary">
+            A verification has been sent to {{this.enrollmentField?.nativeElement.value + '@ljku.edu.in'}}
+        </p>
         <input type="number" #enrollment class="p-2 py-3 rounded border w-100" placeholder="Enrollment Number..."
             id="enrollment">
         <br>
-        <button type="button" class="p-2 py-2 rounded border w-100">Sign Up</button>
+        <button type="button" class="p-2 py-2 rounded border w-100" #signupbtn (click)="onSignUp()">Sign Up</button>
         <br>
         <p style="font-weight: 500;">Forgot Password?</p>
         <span style="font-weight: 500; cursor: pointer;" (click)="changeAuthMode()">Already have an account?
@@ -21,7 +24,7 @@
         <input type="email" #email class="p-2 my-2 py-3 rounded border w-100" placeholder="Email" id="email">
         <input type="password" #password class="p-2 py-3 rounded border w-100" placeholder="Password" id="password">
         <br>
-        <button type="button" (click)="this.onLogin()" class="p-2 py-2 rounded border w-100">Login</button>
+        <button type="button" (click)="this.onLogin()" #loginbtn class="p-2 py-2 rounded border w-100">Login</button>
         <br>
         <p style="font-weight: 500;">Forgot Password?</p>
         <span style="font-weight: 500; cursor: pointer;" (click)="changeAuthMode()">Don't have an account? <b>Sign

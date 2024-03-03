@@ -10,19 +10,26 @@ import { Router, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { TimetableComponent } from './components/timetable/timetable.component';
 import { TimetableService } from './services/timetable/timetable.service';
+import { AuthGuard } from './guards/auth-guard.service';
+import { IAuthGuard } from './guards/i-auth-guard.service';
 
 const appRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,
+    canActivate: [AuthGuard],
+
+    children: [
+      {
+        path: 'timetable',
+        component: TimetableComponent,
+      },
+    ],
   },
   {
     path: 'auth',
     component: UserAuthComponent,
-  },
-  {
-    path: 'timetable',
-    component: TimetableComponent,
+    canActivate: [IAuthGuard],
   },
 ];
 
@@ -39,7 +46,14 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
   ],
-  providers: [Router, UserAuthService, TimetableService],
+  providers: [
+    Router,
+    UserAuthService,
+    TimetableService,
+    AuthGuard,
+    UserAuthService,
+    IAuthGuard,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

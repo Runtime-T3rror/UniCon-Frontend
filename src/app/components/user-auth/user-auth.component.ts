@@ -1,47 +1,92 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserAuthService } from 'src/app/services/user-auth/user-auth.service';
 
 @Component({
   selector: 'app-user-auth',
   templateUrl: './user-auth.component.html',
   styleUrls: ['./user-auth.component.css'],
-  providers: [UserAuthService],
+  providers: [],
 })
 export class UserAuthComponent {
-  @ViewChild('enrollment') enrollmentField: ElementRef | undefined;
-  @ViewChild('email') emailField: ElementRef | undefined;
-  @ViewChild('password') passwordField: ElementRef | undefined;
+  @ViewChild('enrollment') enrollmentField: ElementRef | any;
+  @ViewChild('email') emailField: ElementRef | any;
+  @ViewChild('password') passwordField: ElementRef | any;
+  @ViewChild('signupbtn') signupBtn: ElementRef | any;
+  @ViewChild('loginbtn') loginBtn: ElementRef | any;
   authMode: boolean = false;
   error: boolean = false;
+  verificationSent: boolean = false;
   errorMsg: string = 'Error Message';
-  constructor(private user: UserAuthService, private route: Router) {}
+  constructor(private user: UserAuthService, private router: Router) {}
+
+  private disableSignUp() {
+    this.enrollmentField.nativeElement.disabled = true;
+    this.signupBtn.nativeElement.disabled = true;
+  }
+  private disableLogIn() {
+    this.emailField.nativeElement.disabled = true;
+    this.passwordField.nativeElement.disabled = true;
+    this.loginBtn.nativeElement.disabled = true;
+  }
+  private enableSignUp() {
+    this.enrollmentField.nativeElement.disabled = false;
+    this.signupBtn.nativeElement.disabled = false;
+  }
+  private enableLogIn() {
+    this.emailField.nativeElement.disabled = false;
+    this.passwordField.nativeElement.disabled = false;
+    this.loginBtn.nativeElement.disabled = false;
+  }
 
   onLogin() {
-    const email = this.emailField?.nativeElement;
-    const password = this.passwordField?.nativeElement;
-    if (this.user.validateEmail(email.value) && password.value.length > 8) {
-      email.disabled = true;
-      password.disabled = true;
+    this.disableLogIn();
+    const email = this.emailField.nativeElement;
+    const password = this.passwordField.nativeElement;
+    if (this.user.validateEmail(email.value) && password.value.length >= 8) {
       this.user.login(email.value, password.value).subscribe(
         (response) => {
           this.error = false;
-          email.disabled = false;
-          password.disabled = false;
-          this.route.navigate(['/']);
+          this.user.loginUser(response);
+          this.router.navigate(['']);
+          this.enableLogIn();
         },
         (error) => {
           this.error = true;
-          email.disabled = false;
-          password.disabled = false;
           this.errorMsg = 'Invalid Credentials!';
+          this.enableLogIn();
         }
       );
     } else {
       this.error = true;
-      email.disabled = false;
-      password.disabled = false;
       this.errorMsg = 'Please enter correct email or password!';
+      this.enableLogIn();
+    }
+  }
+
+  onSignUp() {
+    this.disableSignUp();
+    const enrollment = this.enrollmentField.nativeElement;
+    if (enrollment.value.length == 14) {
+      enrollment.disabled = true;
+      this.user.signup(enrollment.value).subscribe(
+        (response) => {
+          this.verificationSent = true;
+          this.error = false;
+          this.enableSignUp();
+        },
+        (error) => {
+          if (error.status == 400) {
+            this.error = true;
+            this.errorMsg = 'Enrollment Number not found!';
+          }
+          this.enableSignUp();
+        }
+      );
+    } else {
+      this.error = true;
+      this.errorMsg = 'Please enter correct Enrollment Number!';
+      this.enableSignUp();
     }
   }
 

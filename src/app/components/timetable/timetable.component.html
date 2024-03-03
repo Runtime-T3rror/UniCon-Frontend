@@ -1,0 +1,80 @@
+<div class="container my-3">
+    <div class="tt-controls rounded">
+        <div *ngFor="let d of days; let i = index" role="button" [ngClass]="{ 'active': this.day === i }"
+            (click)="this.day = i">{{ d }}</div>
+    </div>
+</div>
+<div class="container">
+    <div *ngFor="let p of this.data[this.day]" class="row my-2">
+        <div class="col">
+            <div class="tt-card rounded p-3 px-4">
+                <div class="tt-card-1 center">
+                    <h2>
+                        {{p['subjectName']}}
+                    </h2>
+                    <p>{{p['facultyShortName']}}</p>
+                </div>
+                <div class="tt-card-2">
+                    <h4 class="text-center">{{convertTime(p['startTime'])}} - {{convertTime(p['endTime'])}}</h4>
+                </div>
+                <div class="tt-card-3">
+                    <h2 class="text-end">{{p['roomNo']}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row my-2">
+        <div class="col">
+            <div class="tt-card rounded p-3 px-4">
+                <div class="tt-card-1 center">
+                    <h2>
+                        Python
+                    </h2>
+                    <p>SHP</p>
+                </div>
+                <div class="tt-card-2">
+                    <h3 class="text-center">9:45 - 10:45</h3>
+                </div>
+                <div class="tt-card-3">
+                    <h2 class="text-end">408-A</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <div class="tt-card rounded p-3 px-4">
+                <div class="tt-card-1 center">
+                    <h2>
+                        PS
+                    </h2>
+                    <p>ABC</p>
+                </div>
+                <div class="tt-card-2">
+                    <h3 class="text-center">11:30 - 12:30</h3>
+                </div>
+                <div class="tt-card-3">
+                    <h2 class="text-end">309</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col">
+            <div class="tt-card rounded p-3 px-4">
+                <div class="tt-card-1 center">
+                    <h2>
+                        PS
+                    </h2>
+                    <p>ABC</p>
+                </div>
+                <div class="tt-card-2">
+                    <h3 class="text-center" style="margin: 0;">12:30-13:30</h3>
+                </div>
+                <div class="tt-card-3">
+                    <h2 class="text-end">309</h2>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
